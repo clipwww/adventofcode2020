@@ -2113,7 +2113,6 @@ lmzuqfewdjsvrgtahbiny`
     peoples.forEach(answered => {
       answered.split('').forEach(letter => {
         if (mapping[letter] > 0) {
-          1
           mapping[letter]++;
         } else {
           mapping[letter] = 1;
