@@ -1,4 +1,6 @@
 function day7() {
+  console.time();
+  
   const puzzle = `muted tomato bags contain 1 bright brown bag, 1 dotted gold bag, 2 faded gray bags, 1 posh yellow bag.
 posh brown bags contain 1 dark lime bag, 5 mirrored crimson bags, 1 striped chartreuse bag.
 dotted violet bags contain 4 striped white bags.
@@ -660,6 +662,8 @@ dark violet bags contain no other bags.`
 
   const answer2 = getBags('shiny gold').length;
   console.log('part2', answer2);
+
+  console.timeEnd();
 }
 
 day7()
