@@ -1,6 +1,6 @@
 function day9() {
   console.time();
-  
+
   const puzzle = `2
   24
   36
@@ -1026,21 +1026,20 @@ function day9() {
   const puzzleArr = puzzle.split('\n').map(s => s.trim());
 
   function getInvalidNumber(arr: string[], pre: number) {
-    return arr.find((num, i) => {
-      if (i < pre) {
-        return false;
-      }
-  
+    for (let i = pre; i < arr.length; i++) {
+      const num = +arr[i];
       const map = {};
       for (let j = pre; j > 0; j--) {
-        map[+num - +arr[i - j]] = true;
+        map[num - +arr[i - j]] = true;
       }
       const isFailed = Array(pre).fill('').every((_, j) => {
         return !map[+arr[i - j]];
       })
-  
-      return isFailed;
-    })
+
+      if (isFailed) {
+        return num;
+      }
+    }
   }
 
   // part1
@@ -1048,8 +1047,8 @@ function day9() {
   console.log('part1', answer1)
 
   // part2
-  const answer2 = (function(){
-    const invalidNumber = +answer1;
+  const answer2 = (function () {
+    const invalidNumber = answer1;
 
     function getList(target: number, arr: string[]) {
       if (!arr.length) {
@@ -1058,15 +1057,18 @@ function day9() {
 
       const result: number[] = [];
       let sum = 0;
-      arr.forEach((num) => {
-        if (sum < target) {
-          result.push(+num)
-          sum += +num;
+      for (let i = 0; i < arr.length; i++) {
+        const num = +arr[i];
+        result.push(num)
+        sum += num;
+
+        if (sum >= target) {
+          break;
         }
-      })
+      }
 
       return sum === target ? Math.max(...result) + Math.min(...result) : getList(target, arr.slice(1))
-    } 
+    }
 
     return getList(invalidNumber, puzzleArr)
   }())
