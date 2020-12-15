@@ -122,7 +122,9 @@ function day11() {
 
       newArr = newArr.map((row, i) => {
         return row.map((col, j) => {
-
+          if (col === '.') {
+            return col;
+          }
 
           const position = [
             oldArr[i - 1] ? oldArr[i - 1][j - 1] : undefined,
@@ -163,61 +165,80 @@ function day11() {
       return arr1.every((row, i) => row.every((col, j) => col === (arr2[i] ? arr2[i][j] : undefined)));
     }
 
+    function isSeat(arr: string[][], y: number, x: number) {
+      return arr[y] ? ['L', '#'].includes(arr[y][x]) : false;
+    }
+
     while (!isEqual(newArr, oldArr)) {
-      oldArr = newArr.map(row => row.map(col => col))
+      oldArr = [...newArr]
 
       newArr = newArr.map((row, i) => {
         const yLength = newArr.length;
         const xLength = row.length;
 
         return row.map((col, j) => {
-          const adjacent = Array(8).fill('').map(() => []);
+          if (col === '.') {
+            return col;
+          }
 
-          Array(xLength - j - 1).fill('').forEach((_, x) => {
-            const rightIndex = x + j + 1;
-            const topIndex = x + 1;
-            adjacent[0].push(oldArr[i][rightIndex])
-            adjacent[1].push(oldArr[i - topIndex] ? oldArr[i - topIndex][rightIndex] : undefined)
-            adjacent[2].push(oldArr[i + topIndex] ? oldArr[i + topIndex][rightIndex] : undefined)
-          })
+          const adjacent = []
 
-          Array(j).fill('').forEach((_, x) => {
-            const leftIndex = j - (x + 1);
-            const topIndex = x + 1;
-            adjacent[3].push(oldArr[i][leftIndex])
-            adjacent[4].push(oldArr[i - topIndex] ? oldArr[i - topIndex][leftIndex]: undefined)
-            adjacent[5].push(oldArr[i + topIndex] ? oldArr[i + topIndex][leftIndex]: undefined)
-          })
+          let rightIndex = j + 1;
+          let leftIndex = j - 1;
+          let topIndex = i - 1;
+          let bottomIndex = i + 1;
+          let yIndex = 1;
+          while(true) {
 
-          adjacent[6] = Array(yLength - i - 1).fill('').map((_, y) => {
-            return oldArr[y + i + 1][j];
-          })
+            if (!adjacent[0] && isSeat(oldArr, i, rightIndex)) {
+              adjacent[0] = oldArr[i][rightIndex];
+            }
+            if (!adjacent[1] && isSeat(oldArr, i - yIndex, rightIndex)) {
+              adjacent[1] = oldArr[i - yIndex][rightIndex];
+            }
+            if (!adjacent[2] && isSeat(oldArr, i + yIndex, rightIndex)) {
+              adjacent[2] = oldArr[i + yIndex][rightIndex]
+            }
+            if (!adjacent[3] && isSeat(oldArr, i, leftIndex)) {
+              adjacent[3] = oldArr[i][leftIndex];
+            }
+            if (!adjacent[4] && isSeat(oldArr, i - yIndex, leftIndex)) {
+              adjacent[4] = oldArr[i - yIndex][leftIndex];
+            }
+            if (!adjacent[5] && isSeat(oldArr, i + yIndex, leftIndex)) {
+              adjacent[5] = oldArr[i + yIndex][leftIndex]
+            }
+            if (!adjacent[6] && isSeat(oldArr, topIndex, j)) {
+              adjacent[6] = oldArr[topIndex][j]
+            }
+            if (!adjacent[7] && isSeat(oldArr, bottomIndex, j)) {
+              adjacent[7] = oldArr[bottomIndex][j]
+            }
+            
+            if (col === '#' && adjacent.filter(seat => seat === '#').length >= 5) {
+              return 'L'
+            }
 
-          adjacent[7] = Array(i - 0).fill('').map((_, y) => {
-            return oldArr[y][j];
-          }).reverse();
+            if ((rightIndex >= xLength && leftIndex < 0 && topIndex < 0 && bottomIndex >= yLength) || adjacent.filter(seat => !!seat).length === 8) {
+              break;
+            }
+            
+            rightIndex++;
+            leftIndex--;
+            topIndex--;
+            bottomIndex++;
+            yIndex++;
+          }
 
-
-          // if (i === 3 && j === 0) {
-          //   console.log(adjacent, col)
-          // }
-          const position = adjacent.map(arr => arr.find(seat => ['#', 'L'].includes(seat)))
-
-    
-          if (col === 'L' && position.every(seat => seat !== '#')) {
+          if (col === 'L' && adjacent.every(seat => seat !== '#')) {
             return '#'
           }
 
-          if (col === '#' && position.filter(seat => seat === '#').length >= 5) {
-            return 'L'
-          }
-
-  
           return col;
         })
       })
 
-      console.log(newArr.map(arr => arr.join('')).join('\n'), '\n');
+      // console.log(newArr.map(arr => arr.join('')).join('\n'), '\n');
     }
 
     return newArr.map(row => row.filter(col => col === '#').length).reduce((sum, num) => sum += num, 0);
