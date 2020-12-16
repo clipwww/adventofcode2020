@@ -101,7 +101,6 @@ function day10() {
   1
   11
   7
-  8
   19
   6
   12
@@ -140,7 +139,7 @@ function day10() {
 10
 3`
 
-  const puzzleArr = puzzle2.split('\n').map(s => +s.trim())
+  const puzzleArr = puzzle.split('\n').map(s => +s.trim())
   // .sort((a, b) => a > b ? 1 : -1);
 
   // part1
@@ -170,33 +169,34 @@ function day10() {
     }
     jolt3++;
 
-    console.log({ jolt1, jolt3 })
+    // console.log({ jolt1, jolt3 })
     return jolt1 * jolt3;
   }())
   console.log('part1', answer1)
 
   // part2
-  // const answer2 = puzzleArr
-  //   .sort((a, b) => a > b ? 1 : -1)
-  //   .map((num, i, arr) => arr.slice(i + 1, i + 4).filter(v => v < num + 4).length)
-  //   .reduce((sum, num, i, arr) => {
-  //       switch (num) {
-  //         case 2:
-  //           return arr[i - 1] === 1 ? sum * 2 : sum;
-  //         case 3:
-  //           switch (arr[i + 1]) {
-  //             case 2:
-  //               return sum * 4;
-  //             case 3:
-  //               return sum * 7;
-  //             default:
-  //               return sum;
-  //           }
-  //       }
+  const answer2 = [0 ,...puzzleArr, Math.max(...puzzleArr) + 3]
+    .sort((a, b) => a > b ? 1 : -1)
+    .map((num, i, arr) => arr.slice(i + 1, i + 4).filter(v => v < num + 4).length)
+    .reduce((sum, num, i, arr) => {
+        if(i === 0) console.log(arr);
+        if (![3,2].includes(arr[i - 1])) {
+          switch (num) {
+            case 2:
+              return sum * 2;
+            case 3:
+              switch (arr[i + 1]) {
+                case 2:
+                  return sum * 4;
+                case 3:
+                  return sum * 7;
+              }
+          }
+        }
   
-  //     return sum;
-  //   })
-  // console.log('part2', answer2)
+      return sum;
+    }, 1)
+  console.log('part2', answer2)
 
   console.timeEnd();
 }

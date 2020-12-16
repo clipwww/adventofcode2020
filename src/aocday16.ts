@@ -353,10 +353,9 @@ function day16(isDev = false) {
       possibleIndexArr = possibleIndexArr.map(arr => arr.filter(num => num !== ruleIndex));
     }
 
-    // console.log(mapping, rules.filter(item => item.text.includes('departure')).length);
-    return Array(
-      !isDev ? rules.filter(item => item.text.includes('departure')).length : myTickets.length
-    ).fill('').map((_, i) => myTickets[mapping[i]]).reduce((sum, cur) => sum *= +cur, 1)
+
+    return !isDev ? Array(rules.filter(item => item.text.includes('departure')).length).fill('').map((_, i) => myTickets[mapping[i]]).reduce((sum, cur) => sum *= +cur, 1)
+    : Array(myTickets.length).fill('').map((_, i) => myTickets[mapping[i]]);
   }())
   console.log('part2', answer2);
 
