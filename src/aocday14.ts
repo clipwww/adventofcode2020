@@ -573,7 +573,7 @@ function day14() {
   mem[26] = 1`
 
 
-  const puzzleArr = puzzle2.split('\n')
+  const puzzleArr = puzzle.split('\n')
 
   // part1
   const answer1 = (function () {
@@ -598,10 +598,33 @@ function day14() {
 
   // part2
   const answer2 = (function () {
-    let mem = [];
+    const mem = new Map();
     let mask = '';
 
+    function combine(arr: number[], min = 1) {
+      function fn(n: number, src: number[], got: number[], all: number[][]) {
+        // console.log(`n: ${n}, src: ${src}, got: ${got}, all: ${JSON.stringify(all)}`)
+        if (n === 0) {
+          if (got.length > 0) {
+            all[all.length] = got;
+          }
+          return;
+        }
+        for (let j = 0; j < src.length; j++) {
+          fn(n - 1, src.slice(j + 1), got.concat([src[j]]), all);
+        }
+        return;
+      }
+      const all: number[][] = [];
+      for (let i = min; i < arr.length; i++) {
+        fn(i, arr, [], all);
+      }
+      all.push(arr);
+      return all;
+    }
+
     puzzleArr.forEach(line => {
+      
       if (line.includes('mask')) {
         const [_, newMask] = line.match(/mask = (\w{1,})/)
         mask = newMask;
@@ -613,18 +636,22 @@ function day14() {
       const newAddressArr = (+address).toString(2).padStart(36, '0').split('').map((s, i) => mask[i] === '0' ? s : mask[i]);
       const minAddress = parseInt(newAddressArr.join('').replace(/X/g, '0'), 2);
 
-      let addressList = [];
-      newAddressArr
+      const combineArr = combine(newAddressArr
         .map((s, i) => s === 'X' ? 35 - i : -1)
         .filter(i => i >= 0)
-        .map(i => Math.pow(2, i))
+        .map(i => Math.pow(2, i)))
+
+
+      const addressList = combineArr.map(arr => arr.reduce((sum, cur) => sum += cur, 0)) as number[];
+
+      [0, ...addressList].map(num => num + minAddress).forEach(address => mem.set(address, +value));
 
       
-        addressList.forEach(address =>  mem[address] = value);
     })
-
-    return mem.reduce((sum, cur) => sum += cur, 0);
-
+    // console.log(mem.size)
+    let sum = 0;
+    mem.forEach(value => sum += value);
+    return sum;
   }())
   console.log('part2', answer2)
 
