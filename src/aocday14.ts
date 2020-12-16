@@ -577,7 +577,7 @@ function day14() {
 
   // part1
   const answer1 = (function () {
-    let mem = [];
+    const mem = new Map();
     let mask = '';
 
     puzzleArr.forEach(line => {
@@ -589,10 +589,13 @@ function day14() {
 
       const [_, address, value] = line.match(/mem\[(\d{0,})\] = (\w{1,})/)
 
-      mem[address] = parseInt((+value).toString(2).padStart(36, '0').split('').map((s, i) => mask[i] === 'X' ? s : mask[i]).join(''), 2);
+      const newValue = parseInt((+value).toString(2).padStart(36, '0').split('').map((s, i) => mask[i] === 'X' ? s : mask[i]).join(''), 2);
+      mem.set(address, newValue);
     })
 
-    return mem.reduce((sum, cur) => sum += cur, 0);
+    let sum = 0;
+    mem.forEach(value => sum += value);
+    return sum;
   }())
   console.log('part1', answer1)
 

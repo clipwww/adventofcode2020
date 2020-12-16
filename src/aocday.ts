@@ -7,6 +7,16 @@ function day() {
 
   const puzzleArr = puzzle.split(',')
 
+  const answer1 = (function () {
+
+  }())
+  console.log('part1', answer1);
+
+  const answer2 = (function () {
+
+  }())
+  console.log('part2', answer2);
+
   console.timeEnd();
 }
 
