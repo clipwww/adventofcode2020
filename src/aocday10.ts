@@ -179,7 +179,7 @@ function day10() {
     .sort((a, b) => a > b ? 1 : -1)
     .map((num, i, arr) => arr.slice(i + 1, i + 4).filter(v => v < num + 4).length)
     .reduce((sum, num, i, arr) => {
-        if(i === 0) console.log(arr);
+        // if(i === 0) console.log(arr);
         if (![3,2].includes(arr[i - 1])) {
           switch (num) {
             case 2:

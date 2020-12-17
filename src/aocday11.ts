@@ -161,58 +161,55 @@ function day11() {
     let oldArr = [];
     let newArr = [...puzzleArr];
 
-    function isEqual(arr1: string[][], arr2: string[][]) {
-      return arr1.every((row, i) => row.every((col, j) => col === (arr2[i] ? arr2[i][j] : undefined)));
-    }
 
     function isSeat(arr: string[][], y: number, x: number) {
       return arr[y] ? ['L', '#'].includes(arr[y][x]) : false;
     }
 
-    while (!isEqual(newArr, oldArr)) {
+    while (newArr.join('') !== oldArr.join('')) {
       oldArr = [...newArr]
 
-      newArr = newArr.map((row, i) => {
+      newArr = newArr.map((row, y) => {
         const yLength = newArr.length;
         const xLength = row.length;
 
-        return row.map((col, j) => {
+        return row.map((col, x) => {
           if (col === '.') {
             return col;
           }
 
           const adjacent = []
 
-          let rightIndex = j + 1;
-          let leftIndex = j - 1;
-          let topIndex = i - 1;
-          let bottomIndex = i + 1;
+          let rightIndex = x + 1;
+          let leftIndex = x - 1;
+          let topIndex = y - 1;
+          let bottomIndex = y + 1;
           let yIndex = 1;
           while(true) {
 
-            if (!adjacent[0] && isSeat(oldArr, i, rightIndex)) {
-              adjacent[0] = oldArr[i][rightIndex];
+            if (!adjacent[0] && isSeat(oldArr, y, rightIndex)) {
+              adjacent[0] = oldArr[y][rightIndex];
             }
-            if (!adjacent[1] && isSeat(oldArr, i - yIndex, rightIndex)) {
-              adjacent[1] = oldArr[i - yIndex][rightIndex];
+            if (!adjacent[1] && isSeat(oldArr, y - yIndex, rightIndex)) {
+              adjacent[1] = oldArr[y - yIndex][rightIndex];
             }
-            if (!adjacent[2] && isSeat(oldArr, i + yIndex, rightIndex)) {
-              adjacent[2] = oldArr[i + yIndex][rightIndex]
+            if (!adjacent[2] && isSeat(oldArr, y + yIndex, rightIndex)) {
+              adjacent[2] = oldArr[y + yIndex][rightIndex]
             }
-            if (!adjacent[3] && isSeat(oldArr, i, leftIndex)) {
-              adjacent[3] = oldArr[i][leftIndex];
+            if (!adjacent[3] && isSeat(oldArr, y, leftIndex)) {
+              adjacent[3] = oldArr[y][leftIndex];
             }
-            if (!adjacent[4] && isSeat(oldArr, i - yIndex, leftIndex)) {
-              adjacent[4] = oldArr[i - yIndex][leftIndex];
+            if (!adjacent[4] && isSeat(oldArr, y - yIndex, leftIndex)) {
+              adjacent[4] = oldArr[y - yIndex][leftIndex];
             }
-            if (!adjacent[5] && isSeat(oldArr, i + yIndex, leftIndex)) {
-              adjacent[5] = oldArr[i + yIndex][leftIndex]
+            if (!adjacent[5] && isSeat(oldArr, y + yIndex, leftIndex)) {
+              adjacent[5] = oldArr[y + yIndex][leftIndex]
             }
-            if (!adjacent[6] && isSeat(oldArr, topIndex, j)) {
-              adjacent[6] = oldArr[topIndex][j]
+            if (!adjacent[6] && isSeat(oldArr, topIndex, x)) {
+              adjacent[6] = oldArr[topIndex][x]
             }
-            if (!adjacent[7] && isSeat(oldArr, bottomIndex, j)) {
-              adjacent[7] = oldArr[bottomIndex][j]
+            if (!adjacent[7] && isSeat(oldArr, bottomIndex, x)) {
+              adjacent[7] = oldArr[bottomIndex][x]
             }
             
             if (col === '#' && adjacent.filter(seat => seat === '#').length >= 5) {
@@ -241,7 +238,7 @@ function day11() {
       // console.log(newArr.map(arr => arr.join('')).join('\n'), '\n');
     }
 
-    return newArr.map(row => row.filter(col => col === '#').length).reduce((sum, num) => sum += num, 0);
+    return newArr.join('').match(/\#/g).length;
 
   }());
   console.log('part2', answer2)
