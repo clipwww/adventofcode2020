@@ -55,7 +55,7 @@ function day15() {
 
   const answer2 = (function () {
     const arr = [...puzzleArr];
-    let prevNum = 0;
+    let prevNum = arr[arr.length - 1];
     let turn = arr.length + 1;
     let map = new Map();
 
@@ -69,7 +69,6 @@ function day15() {
     }
 
     arr.forEach((num, index) => writeRecord(num, index + 1))
-    prevNum = arr[arr.length - 1];
 
     while(turn <= 30000000) {     
       // console.log(prevNum, map.get(prevNum))

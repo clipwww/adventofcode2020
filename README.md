@@ -46,7 +46,7 @@
   - ✅ part2
 - day15
   - ✅ part1
-  - ⬜️ part2
+  - ✅ part2
 - day16
   - ✅ part1
   - ✅ part2
