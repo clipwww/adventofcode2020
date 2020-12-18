@@ -40,7 +40,7 @@
   - ✅ part2
 - day13
   - ✅ part1
-  - ⬜️ part2
+  - ✅ part2
 - day14
   - ✅ part1
   - ✅ part2
@@ -51,8 +51,8 @@
   - ✅ part1
   - ✅ part2
 - day17
-  - ⬜️ part1
-  - ⬜️ part2
+  - ⚠️ part1
+  - ⚠️ part2
 - day18
   - ⬜️ part1
   - ⬜️ part2
