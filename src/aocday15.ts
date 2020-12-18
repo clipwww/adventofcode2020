@@ -11,66 +11,89 @@ function day15() {
 
   const answer1 = (function () {
     const arr = [...puzzleArr];
+    let prevNum = 0;
     let turn = arr.length + 1;
-    while(turn <= 2020) {
-      const arrIndex = turn - 1;
-      const prevNum = arr[arrIndex - 1];
+    let map = new Map();
 
-      if (arr.slice(0, arr.length - 1).includes(prevNum)) {
-        let i = arr.lastIndexOf(prevNum);
-        let j = arr.lastIndexOf(prevNum, i - 1);
-        j = j < 0 ? turn : j + 1;
-        i += 1;
+    function writeRecord(num: number, i: number) {
+      const indexRecord = map.get(num);
+      if (!indexRecord) {
+        map.set(num, [undefined, i])
+      } else {
+        map.set(num, [indexRecord[1], i])
+      }
+    }
 
-        arr.push(Math.abs(j - i));
+    arr.forEach((num, index) => writeRecord(num, index + 1))
+    prevNum = arr[arr.length - 1];
+
+    while(turn <= 2020) {     
+      // console.log(prevNum, map.get(prevNum))
+      if (map.has(prevNum) && map.get(prevNum)[0] >= 0) {
+        let [i, j] = map.get(prevNum);
+        i = isNaN(i) ? turn : i;
+
+        const num = Math.abs(i - j);
+        prevNum = num;
+        writeRecord(num, turn)
 
         // console.log(`turn: ${turn}, prevNum: ${prevNum}, push: ${Math.abs(j - i)}`);
       } else {
-        arr.push(0);
-        
+        prevNum = 0;
+        writeRecord(0, turn)
+
         // console.log(`turn: ${turn}, prevNum: ${prevNum}, push: ${0}`);
       }
+          
 
       turn++;
     }
 
-    return arr[arr.length - 1];
+    return prevNum;
   }())
   console.log('part1', answer1)
 
   const answer2 = (function () {
     const arr = [...puzzleArr];
+    let prevNum = 0;
     let turn = arr.length + 1;
-    let count = 0;
-    while(turn <= 30000000) {
-      const arrIndex = turn - 1;
-      const prevNum = arr[arrIndex - 1];
+    let map = new Map();
 
-      
+    function writeRecord(num: number, i: number) {
+      const indexRecord = map.get(num);
+      if (!indexRecord) {
+        map.set(num, [undefined, i])
+      } else {
+        map.set(num, [indexRecord[1], i])
+      }
+    }
 
-      if (arr.slice(0, arr.length - 1).includes(prevNum)) {
-        let i = arr.lastIndexOf(prevNum);
-        let j = arr.lastIndexOf(prevNum, i - 1);
-        j = j < 0 ? turn : j + 1;
-        i += 1;
+    arr.forEach((num, index) => writeRecord(num, index + 1))
+    prevNum = arr[arr.length - 1];
 
-        arr.push(Math.abs(j - i));
-        count++;
+    while(turn <= 30000000) {     
+      // console.log(prevNum, map.get(prevNum))
+      if (map.has(prevNum) && map.get(prevNum)[0] >= 0) {
+        let [i, j] = map.get(prevNum);
+        i = isNaN(i) ? turn : i;
+
+        const num = Math.abs(i - j);
+        prevNum = num;
+        writeRecord(num, turn)
+
         // console.log(`turn: ${turn}, prevNum: ${prevNum}, push: ${Math.abs(j - i)}`);
       } else {
-        arr.push(0);
-        count = 0;
+        prevNum = 0;
+        writeRecord(0, turn)
+
         // console.log(`turn: ${turn}, prevNum: ${prevNum}, push: ${0}`);
       }
-
-      if (count > 100) {
-        console.log(turn);
-      }
+          
 
       turn++;
     }
 
-    return arr[arr.length - 1];
+    return prevNum;
   }())
   console.log('part2', answer2)
 
