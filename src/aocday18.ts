@@ -378,12 +378,136 @@ function day18() {
   (3 * 9 * 5 + 3 + 2) * 4 + 8 + (6 + 3 * 8 * 8) * (7 + 5 + 8) + (8 + 9)
   5 * 2 + 2 * 8 * 5 * (2 * 5)`
 
-  const puzzle2 = `2 * 3 + (4 * 5)`;
+  const puzzle2 = `((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2`;
 
   const puzzleArr = puzzle.split('\n')
 
+  function replaceParentheses(arr: string[]) {
+    if (!/\(|\)/.test(arr.join(''))) {
+      return arr;
+    }
+
+    let temp = [];
+    let temp2 = []
+    let parentheses = false;
+
+  
+    for (let i = 0; i < arr.length; i++) {
+      const value = arr[i];
+
+      if (isNaN(+value)) {
+        switch (value) {
+          case '(':
+            if (parentheses) {
+              temp = [...temp, '(', ...temp2];
+              temp2 = [];
+            } else {
+              parentheses = true;
+            }
+            continue;
+          case ')':
+            if (parentheses) {
+              const acc = temp2.reduce(reduceFn)
+              temp.push(acc);
+
+              temp2 = [];
+              parentheses = false;
+            } else {
+              temp.push(value);
+            }
+            continue;
+        }
+      }
+
+      if (parentheses) {
+        temp2.push(value);
+        continue;
+      }
+      temp.push(value);
+
+    }
+
+    return replaceParentheses(temp)
+  }
+
+  function reduceFn(acc: number, cur: string, i: number, arr: string[]) {
+    if (i === 0) return +cur;
+    switch (arr[i - 1]) {
+      case '+':
+        return acc += +cur;
+      case '*':
+        return acc *= +cur;
+      default:
+        return +acc;
+    }
+  }
+
   const answer1 = (function () {
+
+    return puzzleArr.map(line => {
+      let lineArr = line.replace(/\s/g, '').split('');
+
+      return replaceParentheses(lineArr).reduce(reduceFn);
+    }).reduce((sum, cur) => sum += cur, 0)
+  }())
+  console.log('part1', answer1);
+
+  // ========================================================================================
+
+  const answer2 = (function () {
+    function plusFn(arr: string[]) {
+      if (!/\+/.test(arr.join(''))) {
+        return arr
+      };
+
+      let temp = [];
+      let temp2 = []
+      let plus = false;
+
+      for (let i = 0; i < arr.length; i++) {
+        const value = arr[i];
+
+        switch (true) {
+          case value === '+':
+            plus = true;
+            break;
+          case value === '*':
+            temp.push(...temp2);
+            temp.push(value);
+            temp2 = [];
+            break;
+          case !isNaN(+value):
+            if (plus) {
+              if (temp2[0]) {
+                const acc = +temp2[0] + +value;
+                temp.push(acc);
+              } else {
+                const lastIndex = temp.length - 1;
+                temp[lastIndex] = temp[lastIndex] + +value;
+              }
+
+              temp2 = [];
+              plus = false;
+            } else {
+              temp2.push(value); 
+            }
+          break;
+        }
+
+      }
+      
+      if (temp2.length) {
+        temp = temp.concat(temp2);
+      }
+
+      return plusFn(temp)
+    }
+
     function replaceParentheses(arr: string[]) {
+      if (!/\(|\)/.test(arr.join(''))) {
+        return arr;
+      }
+
       let temp = [];
       let temp2 = []
       let parentheses = false;
@@ -403,7 +527,7 @@ function day18() {
               continue;
             case ')':
               if (parentheses) {
-                const acc = temp2.reduce(reduceFn)
+                const acc = plusFn(temp2).reduce(reduceFn)
                 temp.push(acc);
 
                 temp2 = [];
@@ -423,19 +547,12 @@ function day18() {
 
       }
 
-
-      if (/\(|\)/.test(temp.join(''))) {
-        return replaceParentheses(temp)
-      } else {
-        return temp;
-      }
+      return replaceParentheses(temp)
     }
 
     function reduceFn(acc: number, cur: string, i: number, arr: string[]) {
       if (i === 0) return +cur;
       switch (arr[i - 1]) {
-        case '+':
-          return acc += +cur;
         case '*':
           return acc *= +cur;
         default:
@@ -447,13 +564,8 @@ function day18() {
     return puzzleArr.map(line => {
       let lineArr = line.replace(/\s/g, '').split('');
 
-      return replaceParentheses(lineArr).reduce(reduceFn);
+      return plusFn(replaceParentheses(lineArr)).reduce(reduceFn);
     }).reduce((sum, cur) => sum += cur, 0)
-  }())
-  console.log('part1', answer1);
-
-  const answer2 = (function () {
-    
   }())
   console.log('part2', answer2);
 

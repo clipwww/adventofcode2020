@@ -54,8 +54,8 @@
   - ⚠️ part1
   - ⚠️ part2
 - day18
-  - ⬜️ part1
-  - ⬜️ part2
+  - ✅ part1
+  - ✅ part2
 - day19
   - ⬜️ part1
   - ⬜️ part2
