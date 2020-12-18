@@ -71,7 +71,7 @@ function day13() {
       
       
       let i = 0;
-      const remainder = ((id - index) % id + id) % id;
+      const remainder = id- (index % id);
       console.log(`x = ${remainder} (mod ${id}), index: ${index}`);
       while (true) {
         if ((lcm * i - remainder) % id === 0) {

@@ -5,7 +5,7 @@ function day() {
 
   const puzzle2 = ``;
 
-  const puzzleArr = puzzle.split(',')
+  const puzzleArr = puzzle.split('\n')
 
   const answer1 = (function () {
 
