@@ -57,8 +57,6 @@ function day13() {
       return a / getGcd(a, b) * b;
     }
   
-
-  
     let num = busList.map((busId, index, arr) => {
       if (busId === 'x' || index === 0) {
         return 0;
@@ -88,7 +86,60 @@ function day13() {
     const lcm = busList.filter(id => id !== 'x').reduce((sum, cur) => sum *= +cur, 1);
 
     return num % lcm;
+    
+    // function chineseRemainderTheorem(busIds: number[]) {
+    //   let idMap = new Map<number, number>()
+    //   for (const [index, id] of busIds.slice(1).entries()) {
+    //     if (!id) {
+    //       continue
+    //     }
+    //     idMap.set(id, index + 1)
+    //   }
+    //   console.log(idMap)
+   
+    //   let theLCM = busIds.filter(id => id).reduce(getLcm)
+    //   let sumOfMultipleInverse = 0
 
+    //   for (let [id, index] of idMap.entries()) {
+    //     // x === index ( mod id )
+    //     const mLCM = theLCM / id
+    //     index = index % id
+
+    //     let multipleInverse = 1
+    //     while(true) {
+    //       if ((mLCM * multipleInverse) % id === (id - index)) {
+    //         sumOfMultipleInverse += (mLCM * multipleInverse)
+    //         console.log(`x = ${id - index} (mod ${id}), index: ${index}`);
+    //         break
+    //       }
+    //       ++multipleInverse
+    //     }
+    //   }
+  
+    //   return sumOfMultipleInverse % theLCM
+    // }
+
+    // return chineseRemainderTheorem(busList.map(s => (isNaN(+s) ? 0 : +s)));
+
+
+
+    // let time = 0;
+    // let step = +busList[0];
+
+    // busList.forEach((busId, index) => {
+    //   if (busId === 'x' || index === 0) {
+    //     return;
+    //   }
+
+    //   while (true) {
+    //     if ((time + index) % +busId === 0) {
+    //       step *= +busId
+    //       break
+    //     }
+    //     time += step
+    //   }
+    // }) 
+    // return time; 
   }())
   console.log('part2', answer2)
 
