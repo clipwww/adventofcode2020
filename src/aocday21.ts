@@ -134,7 +134,6 @@ function day21() {
 
   const answer2 = (function () {
     const allergenList = [];
-    const ingredientList = [];
     answer1.mapping.forEach((_, allergen) => allergenList.push(allergen))
 
     // 按照「過敏原」字母排序後排出危險材料順序
