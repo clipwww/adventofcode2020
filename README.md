@@ -60,11 +60,11 @@
   - ✅ part1
   - ✅ part2
 - day20
-  - ⬜️ part1
+  - ✅ part1
   - ⬜️ part2
 - day21
-  - ⬜️ part1
-  - ⬜️ part2
+  - ✅ part1
+  - ✅ part2
 - day22
   - ⬜️ part1
   - ⬜️ part2
