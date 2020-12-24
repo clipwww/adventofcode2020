@@ -72,8 +72,8 @@
   - ✅ part1
   - ⚠️ part2
 - day24
-  - ⬜️ part1
-  - ⬜️ part2
+  - ✅ part1
+  - ✅ part2
 - day25
   - ⬜️ part1
   - ⬜️ part2
