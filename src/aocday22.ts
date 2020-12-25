@@ -116,7 +116,7 @@ Player 2:
   console.log('part1', answer1);
 
   const answer2 = (function () {
-    function subGame(player1: string[], player2: string[], game = 1) {
+    function runGame(player1: string[], player2: string[], game = 1) {
       let round = 1;
       const p1Set = new Set();
       const p2Set = new Set();
@@ -141,7 +141,7 @@ Player 2:
         let winner = ''
         if (+card1 <= player1.length && +card2 <= player2.length) {
           game += 1;
-          const [p1] = subGame(player1.slice(0, +card1), player2.slice(0, +card2), game)
+          const [p1] = runGame(player1.slice(0, +card1), player2.slice(0, +card2), game)
           winner = p1.length ? 'player1' : 'player2';
         } else {
           winner = +card1 > +card2 ? 'player1' : 'player2';
@@ -161,7 +161,7 @@ Player 2:
       return [player1, player2];
     }
 
-    const [p1, p2] = subGame(player1, player2)
+    const [p1, p2] = runGame(player1, player2)
     return [...p1, ...p2].reduce((sum, cur, index, arr) => {
       return sum += (+cur * (arr.length - index))
     }, 0)

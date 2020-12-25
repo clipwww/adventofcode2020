@@ -626,8 +626,8 @@ wseweeenwnesenwwwswnew`;
     }, new Map<string, boolean>())
 
     let sum = 0;
-    map.forEach(bool => {
-      if (bool) sum ++;
+    map.forEach(isBlack => {
+      if (isBlack) sum ++;
     })
 
     return { map, sum };
@@ -650,10 +650,10 @@ wseweeenwnesenwwwswnew`;
 
       const extendMap = new Map<string, boolean>();
       // 擴展
-      map.forEach((bool, key) => {
+      map.forEach((isBlack, key) => {
         const [x, y] = key.split(',').map(s => +s);
 
-        extendMap.set(key, bool)
+        extendMap.set(key, isBlack)
         adjacentList.forEach(([x2, y2]) => {
           const key = `${x + x2},${y + y2}`;
           const tile = map.get(key);
@@ -663,23 +663,23 @@ wseweeenwnesenwwwswnew`;
       
       
       const flipMap = new Map<string, boolean>();
-      extendMap.forEach((bool, key) => {
+      extendMap.forEach((isBlack, key) => {
         const [x, y] = key.split(',').map(s => +s);
-        const blockCount = adjacentList.filter(([x2, y2]) => {
+        const blackCount = adjacentList.filter(([x2, y2]) => {
           const tile = extendMap.get(`${x + x2},${y + y2}`);
           return !!tile;
         }).length
 
-        if (bool) {
-          flipMap.set(key, blockCount === 0 || blockCount > 2 ? false : true);
+        if (isBlack) {
+          flipMap.set(key, blackCount === 0 || blackCount > 2 ? false : true);
         } else {
-          flipMap.set(key, blockCount === 2);
+          flipMap.set(key, blackCount === 2);
         }
       })
       
       sum = 0;
-      flipMap.forEach((bool) => {
-        if (bool) sum ++;
+      flipMap.forEach((isBlack) => {
+        if (isBlack) sum ++;
       })
 
       map = flipMap;
