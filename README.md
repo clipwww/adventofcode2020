@@ -76,4 +76,3 @@
   - ✅ part2
 - day25
   - ⬜️ part1
-  - ⬜️ part2
